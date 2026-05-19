@@ -142,9 +142,7 @@ const PublishedManuscripts = () => {
                     <Eye size={14} /> Read Paper
                   </button>
 
-                  <button className="px-3 py-2 bg-slate-50 text-slate-600 border border-slate-200 rounded-lg text-xs font-bold">
-                    Details
-                  </button>
+                  
                 </div>
               </div>
             </div>

@@ -5,8 +5,10 @@ import { ChevronDown, LogOut, Menu, X } from "lucide-react";
 import imagLogo from "../assets/Logo_psychological Journal_with text (1).png";
 
 const PublicNavbar = () => {
-  const [open, setOpen] = useState(false); // dropdown
+  const [open, setOpen] = useState(false); // About dropdown
+  const [publishedOpen, setPublishedOpen] = useState(false); // Published dropdown
   const [mobileOpen, setMobileOpen] = useState(false); // hamburger
+
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -23,22 +25,66 @@ const PublicNavbar = () => {
 
   return (
     <nav className="w-full bg-white border-b border-slate-100 px-8 py-5 sticky top-0 z-[100]">
-      
-      {/* MAIN ROW (UNCHANGED) */}
+
       <div className="flex items-center">
-        
-        {/* LEFT → LOGO */}
+
+        {/* LOGO */}
         <div className="w-1/4">
           <Link to="/" className="flex items-center gap-2 group">
             <img src={imagLogo} alt="" className="h-12 w-auto" />
           </Link>
         </div>
 
-        {/* CENTER → NAVIGATION (DESKTOP ONLY) */}
+        {/* CENTER NAV */}
         <div className="w-2/4 hidden md:flex justify-center items-center gap-4">
-          <NavLink to="/" className={navLinkStyle}>Home</NavLink>
-          <NavLink to="/published" className={navLinkStyle}>Published</NavLink>
 
+          <NavLink to="/" className={navLinkStyle}>Home</NavLink>
+
+          {/* ✅ Published Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setPublishedOpen(true)}
+            onMouseLeave={() => setPublishedOpen(false)}
+          >
+            <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600">
+              Published
+              <ChevronDown
+                size={14}
+                className={`transition-transform ${
+                  publishedOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            <AnimatePresence>
+              {publishedOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 w-56 bg-white shadow-xl rounded-xl border py-2 mt-1"
+                >
+                  <NavLink
+                    to="/published"
+                    className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
+                  >
+                    Recent Published
+                  </NavLink>
+
+                  <a
+                    href="https://stomuniver.ru/0205-9592/index"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
+                  >
+                    Old Published
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* About Dropdown */}
           <div
             className="relative"
             onMouseEnter={() => setOpen(true)}
@@ -80,7 +126,7 @@ const PublicNavbar = () => {
           </div>
         </div>
 
-        {/* RIGHT → AUTH (DESKTOP ONLY) */}
+        {/* AUTH */}
         <div className="w-1/4 hidden md:flex justify-end gap-3 items-center">
           {!token ? (
             <>
@@ -101,7 +147,7 @@ const PublicNavbar = () => {
           )}
         </div>
 
-        {/* HAMBURGER (MOBILE ONLY) */}
+        {/* MOBILE MENU ICON */}
         <div className="md:hidden ml-auto">
           <button onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X size={26} /> : <Menu size={26} />}
@@ -109,7 +155,7 @@ const PublicNavbar = () => {
         </div>
       </div>
 
-      {/* MOBILE MENU (SAME CONTENT, STACKED) */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -119,8 +165,39 @@ const PublicNavbar = () => {
             className="md:hidden mt-4 border-t pt-4 space-y-2"
           >
             <NavLink to="/" className={navLinkStyle}>Home</NavLink>
-            <NavLink to="/published" className={navLinkStyle}>Published</NavLink>
 
+            {/* Published Mobile */}
+            <div>
+              <button
+                onClick={() => setPublishedOpen(!publishedOpen)}
+                className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-600"
+              >
+                Published
+                <ChevronDown
+                  size={14}
+                  className={`${publishedOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {publishedOpen && (
+                <div className="pl-4 space-y-1">
+                  <NavLink to="/published" className={navLinkStyle}>
+                    Recent Published
+                  </NavLink>
+
+                  <a
+                    href="https://stomuniver.ru/0205-9592/index"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={navLinkStyle}
+                  >
+                    Old Published
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* About Mobile */}
             <button
               onClick={() => setOpen(!open)}
               className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-600"
