@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Filter as FilterIcon, Loader2, BookOpen } from "lucide-react";
 import AdminManuscriptCard from "../../components/admin/AdminManuscriptCard.jsx";
 import AdminFilterSidebar from "../../components/admin/AdminFilterSidebar.jsx"; 
+import API from "../../api/authApi.js";
 import { fetchAllManuscripts } from "../../features/admin/adminSlice.jsx";
 
 const AdminManuscripts = () => {
@@ -28,21 +29,50 @@ const AdminManuscripts = () => {
   });
 
   /**
-   * FIXED: Since you switched to Cloudinary, we use the fileUrl directly.
-   * This avoids the complexity of fetching blobs and creating local URLs.
+   * Fetch the manuscript from the backend with auth, then open it.
+   * This preserves the backend-provided filename and content type.
    */
-  const handleRead = (manuscript) => {
-    if (!manuscript.fileUrl) {
-      toast.error("No file URL found for this manuscript.");
-      return;
-    }
-
+  const handleRead = async (manuscript) => {
     const toastId = toast.loading(`Opening ${manuscript.title}...`);
-    
+
     try {
-      // Open the Cloudinary URL in a new tab
-      window.open(manuscript.fileUrl, "_blank", "noopener,noreferrer");
-      
+      const url = `${API.defaults.baseURL}/admin/manuscripts/${manuscript._id}/download`;
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch manuscript");
+      }
+
+      const disposition = res.headers.get("content-disposition") || "";
+      let filename = manuscript.filename || "manuscript.pdf";
+
+      if (disposition.includes("filename=")) {
+        filename = disposition
+          .split("filename=")[1]
+          .replace(/"/g, "")
+          .trim();
+      }
+
+      const blob = await res.blob();
+      const objectUrl = window.URL.createObjectURL(blob);
+
+      if (blob.type === "application/pdf") {
+        window.open(objectUrl, "_blank", "noopener,noreferrer");
+      } else {
+        const link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+
+      setTimeout(() => window.URL.revokeObjectURL(objectUrl), 10000);
+
       toast.update(toastId, {
         render: "Document opened",
         type: "success",

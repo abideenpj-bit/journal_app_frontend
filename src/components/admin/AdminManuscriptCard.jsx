@@ -32,7 +32,7 @@ const AdminManuscriptCard = ({ manuscript, onRead }) => {
       setLoading(true);
 
       const res = await fetch(
-        `${API.defaults.baseURL}/admin/manuscripts/${manuscript._id}/file`,
+        `${API.defaults.baseURL}/admin/manuscripts/${manuscript._id}/download`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -42,15 +42,29 @@ const AdminManuscriptCard = ({ manuscript, onRead }) => {
 
       if (!res.ok) throw new Error("Failed to fetch file");
 
+      const disposition = res.headers.get("content-disposition") || "";
+      let filename = manuscript.filename || "manuscript.pdf";
+
+      if (disposition.includes("filename=")) {
+        filename = disposition
+          .split("filename=")[1]
+          .replace(/"/g, "")
+          .trim();
+      }
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = manuscript.filename || "manuscript.pdf";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      if (blob.type === "application/pdf") {
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
 
       setTimeout(() => window.URL.revokeObjectURL(url), 10000);
     } catch (err) {
