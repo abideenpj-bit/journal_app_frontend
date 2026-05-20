@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { Filter as FilterIcon, Loader2, BookOpen } from "lucide-react";
 import AdminManuscriptCard from "../../components/admin/AdminManuscriptCard.jsx";
-import AdminFilterSidebar from "../../components/admin/AdminFilterSidebar.jsx"; // Import new sidebar
+import AdminFilterSidebar from "../../components/admin/AdminFilterSidebar.jsx"; 
 import { fetchAllManuscripts } from "../../features/admin/adminSlice.jsx";
 import API from "../../api/authApi.js";
 
@@ -28,15 +28,13 @@ const AdminManuscripts = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const handleRead = async (manuscript) => {
+  // Updated handler mirroring your working Published component pattern
+  const handleRead = (manuscript) => {
     const toastId = toast.loading(`Opening ${manuscript.title}...`);
     try {
-      const response = await API.get(`/admin/manuscripts/${manuscript._id}/file`, {
-        responseType: 'blob',
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      window.open(url, "_blank");
-      toast.update(toastId, { render: "Document loaded", type: "success", isLoading: false, autoClose: 2000 });
+      // Ensure this endpoint route points accurately to your backend router mapping downloadManuscriptAdmin
+      window.open(`${API.defaults.baseURL}/admin/manuscripts/${manuscript._id}/file`, "_blank");
+      toast.update(toastId, { render: "Document opened", type: "success", isLoading: false, autoClose: 2000 });
     } catch (err) {
       toast.update(toastId, { render: "Failed to open file", type: "error", isLoading: false, autoClose: 3000 });
     }

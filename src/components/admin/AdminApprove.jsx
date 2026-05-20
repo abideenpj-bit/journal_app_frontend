@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { 
-  getExpertRequests, 
-  approveExpert, 
-  rejectExpert 
+import {
+  getExpertRequests,
+  approveExpert,
+  rejectExpert,
 } from "../../features/role/roleActions";
-import { 
-  UserCheck, 
-  UserX, 
-  Mail, 
-  MessageSquare, 
-  ShieldAlert, 
-  Loader2 
+import {
+  UserCheck,
+  UserX,
+  Mail,
+  MessageSquare,
+  ShieldAlert,
+  Loader2,
 } from "lucide-react";
 import ConfirmModal from "../ConfirmModal"; // Use your modal
 
@@ -47,18 +47,26 @@ export default function AdminApprove() {
 
   // Confirm action
   const handleConfirmAction = async () => {
-    if (!selectedRequestId) return;
-    setLoadingAction(true);
+  if (!selectedRequestId) return;
+
+  setLoadingAction(true);
+
+  try {
     if (actionType === "approve") {
       await dispatch(approveExpert(selectedRequestId));
-    } else if (actionType === "reject") {
+    } else {
       await dispatch(rejectExpert(selectedRequestId));
     }
+
+    // ✅ REFRESH LIST AFTER ACTION
+    await dispatch(getExpertRequests());
+  } finally {
     setLoadingAction(false);
     setShowActionModal(false);
     setSelectedRequestId(null);
     setActionType("");
-  };
+  }
+};
 
   return (
     <div className="p-6 bg-base-200 min-h-screen">
@@ -70,7 +78,9 @@ export default function AdminApprove() {
               <ShieldAlert className="text-primary" size={32} />
               Expert Approvals
             </h1>
-            <p className="text-base-content/60 mt-1">Review credentials and upgrade user roles</p>
+            <p className="text-base-content/60 mt-1">
+              Review credentials and upgrade user roles
+            </p>
           </div>
           <div className="badge badge-primary badge-outline p-4 font-bold">
             {requests.length} Pending Requests
@@ -83,24 +93,37 @@ export default function AdminApprove() {
             <table className="table table-lg w-full">
               <thead className="bg-base-200/50">
                 <tr>
-                  <th className="text-sm uppercase tracking-wider">Applicant</th>
-                  <th className="text-sm uppercase tracking-wider">Background Info</th>
-                  <th className="text-sm uppercase tracking-wider text-right">Actions</th>
+                  <th className="text-sm uppercase tracking-wider">
+                    Applicant
+                  </th>
+                  <th className="text-sm uppercase tracking-wider">
+                    Background Info
+                  </th>
+                  <th className="text-sm uppercase tracking-wider text-right">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {requests.map((req) => (
-                  <tr key={req._id} className="hover:bg-base-200/30 transition-colors">
+                  <tr
+                    key={req._id}
+                    className="hover:bg-base-200/30 transition-colors"
+                  >
                     {/* User */}
                     <td>
                       <div className="flex items-center gap-4">
                         <div className="avatar placeholder">
                           <div className="bg-primary text-primary-content rounded-full w-12 shadow-md">
-                            <span className="text-lg font-bold">{req.user.name.charAt(0)}</span>
+                            <span className="text-lg font-bold">
+                              {req.user.name.charAt(0)}
+                            </span>
                           </div>
                         </div>
                         <div>
-                          <div className="font-black text-base">{req.user.name}</div>
+                          <div className="font-black text-base">
+                            {req.user.name}
+                          </div>
                           <div className="text-sm opacity-60 flex items-center gap-1">
                             <Mail size={14} /> {req.user.email}
                           </div>
@@ -111,7 +134,10 @@ export default function AdminApprove() {
                     {/* Background Info */}
                     <td>
                       <div className="flex items-start gap-2 max-w-md">
-                        <MessageSquare size={16} className="mt-1 opacity-40 shrink-0" />
+                        <MessageSquare
+                          size={16}
+                          className="mt-1 opacity-40 shrink-0"
+                        />
                         <p className="text-sm leading-relaxed italic">
                           {req.message?.length > 30
                             ? `${req.message.slice(0, 30)}... `
@@ -145,7 +171,11 @@ export default function AdminApprove() {
                           onClick={() => handleActionClick("approve", req._id)}
                           disabled={loading}
                         >
-                          {loading ? <Loader2 className="animate-spin" size={18} /> : <UserCheck size={18} />}
+                          {loading ? (
+                            <Loader2 className="animate-spin" size={18} />
+                          ) : (
+                            <UserCheck size={18} />
+                          )}
                           Approve
                         </button>
                       </div>
@@ -162,7 +192,9 @@ export default function AdminApprove() {
                   <UserCheck size={40} className="opacity-20" />
                 </div>
                 <h3 className="text-xl font-bold opacity-50">All caught up!</h3>
-                <p className="text-base-content/40">No pending expert applications.</p>
+                <p className="text-base-content/40">
+                  No pending expert applications.
+                </p>
               </div>
             )}
 
@@ -176,29 +208,41 @@ export default function AdminApprove() {
       </div>
 
       {/* 🔹 Info Modal for "See More" */}
-      <ConfirmModal
-        isOpen={showInfoModal}
-        onClose={() => setShowInfoModal(false)}
-        title="Expert Background Info"
-        message={selectedMessage}
-        confirmText="Close"
-        cancelText=""
-        loading={false}
-        onConfirm={() => setShowInfoModal(false)}
-        className="w-fit max-w-[90vw] p-6"
-      />
+    {/* 🔹 Info Modal for "See More" */}
+<ConfirmModal
+  isOpen={showInfoModal}
+  onClose={() => setShowInfoModal(false)}
+  title="Expert Background Info"
+  message={selectedMessage}
+  confirmText="Close"
+  cancelText=""
+  onConfirm={() => setShowInfoModal(false)}
+/>
 
-      {/* 🔹 Action Modal for Approve/Reject */}
-      <ConfirmModal
-        isOpen={showActionModal}
-        onClose={() => setShowActionModal(false)}
-        title={actionType === "approve" ? "Approve Expert?" : "Reject Expert?"}
-        message={`Are you sure you want to ${actionType} this request?`}
-        confirmText={actionType === "approve" ? "Yes, Approve" : "Yes, Reject"}
-        cancelText="Cancel"
-        loading={loadingAction}
-        onConfirm={handleConfirmAction}
-      />
+{/* 🔹 Approve / Reject Modal */}
+<ConfirmModal
+  isOpen={showActionModal}
+  onClose={() => setShowActionModal(false)}
+  title={
+    actionType === "approve"
+      ? "Approve Expert?"
+      : "Reject Expert?"
+  }
+  message={`Are you sure you want to ${actionType} this request?`}
+  confirmText={
+    actionType === "approve"
+      ? "Yes, Approve"
+      : "Yes, Reject"
+  }
+  cancelText="Cancel"
+  loading={loadingAction}
+  loadingText={
+    actionType === "approve"
+      ? "Approving..."
+      : "Rejecting..."
+  }
+  onConfirm={handleConfirmAction}
+/>
     </div>
   );
 }
