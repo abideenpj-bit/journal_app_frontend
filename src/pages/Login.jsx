@@ -29,7 +29,8 @@ export default function Login() {
     e.preventDefault();
     dispatch(loginUser(form)).then((res) => {
       if (!res.error) {
-        localStorage.setItem("token", res.payload.token);
+        // ✅ Redux's loginUser.fulfilled already handles localStorage.setItem("token")
+        // and updates the state. The Navbar will re-render automatically.
         navigate("/");
       }
     });

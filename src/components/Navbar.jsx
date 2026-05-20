@@ -1,42 +1,43 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import AdminNavbar from "./admin/AdminNavbar";
 import AuthorNavbar from "./author/AuthorNavbar";
 import ReviewerNavbar from "./reviewer/ReviewerNavbar";
 import PublicNavbar from "./PublicNavbar";
-import jwt_decode from "jwt-decode"; // ✅ default import
+import jwt_decode from "jwt-decode";
 
 const Navbar = () => {
   const [role, setRole] = useState(null);
-  const [token, setToken] = useState(null);
+  
+  // ✅ Get token directly from Redux state
+  const { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
+    if (token) {
       try {
-        const decoded = jwt_decode(storedToken); // ✅ works now
-        setRole(decoded.role); // extract role from token
-        setToken(storedToken);
+        const decoded = jwt_decode(token);
+        setRole(decoded.role); // Extract role from token
       } catch (err) {
         console.error("Invalid token", err);
         setRole(null);
-        setToken(null);
-        localStorage.removeItem("token");
       }
+    } else {
+      setRole(null); // Clear role if no token
     }
-  }, []);
-
-  console.log(role, "role");
+  }, [token]); // ✅ Re-run this effect whenever the token in Redux changes
 
   return (
     <>
       <PublicNavbar />
 
-
-      <div className="border-t ">
-        {role === "admin" && <AdminNavbar />}
-        {role === "author" && <AuthorNavbar />}
-        {role === "expert" && <ReviewerNavbar />}
-      </div>
+      {/* ✅ This section will now update instantly when token/role changes */}
+      {role && (
+        <div className="border-t">
+          {role === "admin" && <AdminNavbar />}
+          {role === "author" && <AuthorNavbar />}
+          {role === "expert" && <ReviewerNavbar />}
+        </div>
+      )}
     </>
   );
 };

@@ -1,5 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../features/auth/authSlice"; // Import logout action
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, LogOut, Menu, X } from "lucide-react";
 import imagLogo from "../assets/Logo_psychological Journal_with text (1).png";
@@ -9,12 +11,14 @@ const PublicNavbar = () => {
   const [publishedOpen, setPublishedOpen] = useState(false); // Published dropdown
   const [mobileOpen, setMobileOpen] = useState(false); // hamburger
 
-  const token = localStorage.getItem("token");
+  // ✅ Get token directly from Redux state
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    dispatch(logout()); // ✅ Use Redux logout (clears state & localStorage)
+    localStorage.removeItem("role"); // Clear role if you use it
     navigate("/login");
   };
 

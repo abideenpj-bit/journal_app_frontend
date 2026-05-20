@@ -126,6 +126,7 @@ const ManuscriptCard = ({ manuscript, onDelete, onEdit }) => {
               className="flex-1 px-3 py-2 bg-slate-50 text-slate-700 border border-slate-200 rounded-lg text-xs font-bold hover:bg-slate-100 flex items-center justify-center gap-2"
             >
               <Eye size={14} /> View
+              
             </button>
 
             {(manuscript.reviewerComments || manuscript.reviewedAt) && (
