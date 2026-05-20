@@ -6,7 +6,6 @@ import { Filter as FilterIcon, Loader2, BookOpen } from "lucide-react";
 import AdminManuscriptCard from "../../components/admin/AdminManuscriptCard.jsx";
 import AdminFilterSidebar from "../../components/admin/AdminFilterSidebar.jsx"; 
 import { fetchAllManuscripts } from "../../features/admin/adminSlice.jsx";
-import API from "../../api/authApi.js";
 
 const AdminManuscripts = () => {
   const dispatch = useDispatch();
@@ -28,15 +27,36 @@ const AdminManuscripts = () => {
     return matchesSearch && matchesStatus;
   });
 
-  // Updated handler mirroring your working Published component pattern
+  /**
+   * FIXED: Since you switched to Cloudinary, we use the fileUrl directly.
+   * This avoids the complexity of fetching blobs and creating local URLs.
+   */
   const handleRead = (manuscript) => {
+    if (!manuscript.fileUrl) {
+      toast.error("No file URL found for this manuscript.");
+      return;
+    }
+
     const toastId = toast.loading(`Opening ${manuscript.title}...`);
+    
     try {
-      // Ensure this endpoint route points accurately to your backend router mapping downloadManuscriptAdmin
-      window.open(`${API.defaults.baseURL}/admin/manuscripts/${manuscript._id}/file`, "_blank");
-      toast.update(toastId, { render: "Document opened", type: "success", isLoading: false, autoClose: 2000 });
+      // Open the Cloudinary URL in a new tab
+      window.open(manuscript.fileUrl, "_blank", "noopener,noreferrer");
+      
+      toast.update(toastId, {
+        render: "Document opened",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
     } catch (err) {
-      toast.update(toastId, { render: "Failed to open file", type: "error", isLoading: false, autoClose: 3000 });
+      console.error(err);
+      toast.update(toastId, {
+        render: "Failed to open file",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -51,8 +71,6 @@ const AdminManuscripts = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex relative">
-      
-      {/* 1. ADMIN FILTER SIDEBAR */}
       <AdminFilterSidebar 
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
@@ -62,11 +80,8 @@ const AdminManuscripts = () => {
         setStatusFilter={setStatusFilter}
       />
 
-      {/* 2. MAIN CONTENT */}
       <main className="flex-1 p-6 lg:p-10">
         <div className="max-w-7xl mx-auto">
-          
-          {/* Header */}
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-4">
               <button 
@@ -88,7 +103,6 @@ const AdminManuscripts = () => {
             </div>
           </div>
 
-          {/* Manuscript Grid */}
           <div className="grid gap-6 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
             <AnimatePresence mode="popLayout">
               {filteredManuscripts.length > 0 ? (

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Eye, UserCheck, BookOpenCheck, Calendar, User, UploadCloud, XCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import API from "../../api/authApi.js";
 import { togglePublishStatus } from "../../features/admin/adminSlice.jsx";
 import { toast } from "react-toastify";
 import ConfirmModal from "../ConfirmModal.jsx";
@@ -15,7 +16,7 @@ const statusStyles = {
   published: "bg-slate-900 text-indigo-400 border-slate-800",
 };
 
-const AdminManuscriptCard = ({ manuscript }) => {
+const AdminManuscriptCard = ({ manuscript, onRead }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPublishModal, setShowPublishModal] = useState(false);
@@ -23,14 +24,22 @@ const AdminManuscriptCard = ({ manuscript }) => {
 
   // ✅ DOWNLOAD / VIEW FILE
   const handleRead = async () => {
+    if (onRead) {
+      return onRead(manuscript);
+    }
+
     try {
       setLoading(true);
 
-      const res = await fetch(`/api/admin/manuscripts/${manuscript._id}/download`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        `${API.defaults.baseURL}/admin/manuscripts/${manuscript._id}/file`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
       if (!res.ok) throw new Error("Failed to fetch file");
 
       const blob = await res.blob();
@@ -38,7 +47,7 @@ const AdminManuscriptCard = ({ manuscript }) => {
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = manuscript.filename || "manuscript.pdf"; // original filename
+      link.download = manuscript.filename || "manuscript.pdf";
       document.body.appendChild(link);
       link.click();
       link.remove();
