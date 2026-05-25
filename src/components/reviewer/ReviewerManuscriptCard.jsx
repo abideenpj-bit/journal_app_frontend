@@ -83,7 +83,7 @@ const ReviewerManuscriptCard = ({ manuscript, onStartReview, onSubmitReview }) =
               <h3 className="font-bold text-xl text-slate-800 leading-tight">{manuscript.title}</h3>
               <p className="text-sm text-slate-500 mt-1 font-medium">Author: {manuscript.author?.name}</p>
             </div>
-            <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${statusStyles[manuscript.status]}`}>
+            {/* <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${statusStyles[manuscript.status]}`}> */}
               {manuscript.status.replace("_", " ")}
             </span>
           </div>
