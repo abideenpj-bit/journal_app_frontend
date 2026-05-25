@@ -11,7 +11,7 @@ const AdminFilterSidebar = ({
   setStatusFilter 
 }) => {
   // Admin needs to see all stages of the workflow
-  const statuses = ["All", "pending", "sub", "under_review", "accepted", "published", "rejected"];
+  const statuses = ["All", "pending", "submitted", "under_review", "accepted", "published", "rejected"];
 
   const sidebarVariants = {
     open: { x: 0, opacity: 1 },
