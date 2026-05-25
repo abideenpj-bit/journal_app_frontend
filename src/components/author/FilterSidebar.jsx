@@ -10,7 +10,7 @@ const FilterSidebar = ({
   statusFilter, 
   setStatusFilter 
 }) => {
-  const statuses = ["All", "Pending", "In Review", "Published", "Rejected"];
+  const statuses = ["All", "Pending", "Under Review", "Published", "Rejected"];
 
   const sidebarVariants = {
     open: { x: 0, opacity: 1 },
