@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Search, X, Filter as FilterIcon } from "lucide-react";
 
-const AdminFilterSidebar = ({ 
+const FilterSidebar = ({ 
   isOpen, 
   setIsOpen, 
   searchTerm, 
@@ -10,7 +10,7 @@ const AdminFilterSidebar = ({
   statusFilter, 
   setStatusFilter 
 }) => {
-  // Admin needs to see all stages of the workflow
+  
   const statuses = ["All", "pending", "submitted", "under_review", "accepted", "published", "rejected"];
 
   const sidebarVariants = {
@@ -28,6 +28,7 @@ const AdminFilterSidebar = ({
         />
       )}
 
+      {/* Sidebar Container */}
       <motion.aside
         initial="closed"
         animate={isOpen ? "open" : "closed"}
@@ -38,7 +39,7 @@ const AdminFilterSidebar = ({
         }`}
       >
         <div className="flex justify-between items-center lg:hidden mb-6">
-          <span className="font-bold text-slate-900">Admin Filters</span>
+          <span className="font-bold text-slate-900">Filters</span>
           <button onClick={() => setIsOpen(false)} className="p-2 text-slate-500">
             <X size={20} />
           </button>
@@ -48,34 +49,36 @@ const AdminFilterSidebar = ({
           {/* Search Section */}
           <div>
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-              <Search size={14} /> Search Title
+              <Search size={14} /> Search
             </h3>
-            <input 
-              type="text"
-              placeholder="Filter by title..."
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <div className="relative">
+              <input 
+                type="text"
+                placeholder="Manuscript title..."
+                className="w-full pl-4 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* Status Filter Section */}
           <div>
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-              <FilterIcon size={14} /> Global Status
+              <FilterIcon size={14} /> Status Filter
             </h3>
-            <div className="space-y-1.5 overflow-y-auto max-h-[60vh] pr-2 custom-scrollbar">
+            <div className="space-y-1.5">
               {statuses.map((status) => (
                 <button
                   key={status}
                   onClick={() => setStatusFilter(status)}
-                  className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-tight transition-all ${
+                  className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
                     statusFilter === status 
                     ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100" 
                     : "text-slate-600 hover:bg-slate-100"
                   }`}
                 >
-                  {status.replace("_", " ")}
+                  {status}
                 </button>
               ))}
             </div>
@@ -86,4 +89,4 @@ const AdminFilterSidebar = ({
   );
 };
 
-export default AdminFilterSidebar;
+export default FilterSidebar;
