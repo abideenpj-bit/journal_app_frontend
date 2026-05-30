@@ -63,10 +63,9 @@ const ManuscriptList = () => {
 
   const filteredManuscripts = manuscripts.filter((m) => {
     const matchesSearch = m.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-  statusFilter === "All" ||
-  statusFilter === "all" ||
-  m.status === statusFilter;
+  const matchesStatus =
+  statusFilter?.trim().toLowerCase() === "all" ||
+  m.status?.trim().toLowerCase() === statusFilter?.trim().toLowerCase();
     return matchesSearch && matchesStatus;
   });
 
