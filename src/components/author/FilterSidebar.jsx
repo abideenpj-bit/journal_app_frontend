@@ -10,7 +10,15 @@ const FilterSidebar = ({
   statusFilter, 
   setStatusFilter 
 }) => {
-  const statuses = ["All", "Pending", "In Review", "Published", "Rejected"];
+  const statuses = [
+    { value: "All", label: "All" },
+    { value: "pending", label: "Pending" },
+    { value: "submitted", label: "Submitted" },
+    { value: "under_review", label: "Under Review" },
+    { value: "accepted", label: "Accepted" },
+    { value: "published", label: "Published" },
+    { value: "rejected", label: "Rejected" },
+  ];
 
   const sidebarVariants = {
     open: { x: 0, opacity: 1 },
@@ -48,17 +56,15 @@ const FilterSidebar = ({
           {/* Search Section */}
           <div>
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-              <Search size={14} /> Search
+              <Search size={14} /> Search Title
             </h3>
-            <div className="relative">
-              <input 
-                type="text"
-                placeholder="Manuscript title..."
-                className="w-full pl-4 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+            <input 
+              type="text"
+              placeholder="Filter by title..."
+              className="w-full pl-4 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
 
           {/* Status Filter Section */}
@@ -69,15 +75,15 @@ const FilterSidebar = ({
             <div className="space-y-1.5">
               {statuses.map((status) => (
                 <button
-                  key={status}
-                  onClick={() => setStatusFilter(status)}
+                  key={status.value}
+                  onClick={() => setStatusFilter(status.value)}
                   className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                    statusFilter === status 
+                    statusFilter === status.value 
                     ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100" 
                     : "text-slate-600 hover:bg-slate-100"
                   }`}
                 >
-                  {status}
+                  {status.label}
                 </button>
               ))}
             </div>
