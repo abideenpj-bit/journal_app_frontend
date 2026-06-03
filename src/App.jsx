@@ -8,6 +8,7 @@ import AuthorRequestPage from "./pages/author/AuthorRequestPage.jsx";
 // import AdminApprovePage from "./pages/AdminApprovePage.jsx";
 import LoginSuccess from "./pages/LoginSuccess.jsx";
 import Navbar from "./components/Navbar.jsx";
+import OldPublished from "./pages/OldPublished.jsx";
 
 
 import AdminApprove from "./components/admin/AdminApprove.jsx";
@@ -63,6 +64,8 @@ function App() {
         <Route path="/admin/manuscripts" element={<AdminManuscripts />} />
         <Route path="/approve-request" element={<AdminApprovePage />} />
         <Route path="/admin/assign-reviewer/:manuscriptId" element={<AssignReviewerPage />} />
+
+          <Route path="/old-published" element={<OldPublished />} />
 
         {/* <Route path="/admin-approve" element={<AdminApprove />} /> */}
         {/* reviewer navbar links */}
