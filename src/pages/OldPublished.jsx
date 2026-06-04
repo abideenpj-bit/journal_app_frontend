@@ -1,7 +1,7 @@
 const OldPublished = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <h1 className="text-5xl font-bold text-center">
+    <div className="py-10">
+      <h1 className="text-center text-5xl font-bold">
         Old Published Articles
       </h1>
     </div>
