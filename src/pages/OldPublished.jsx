@@ -1,8 +1,9 @@
-
 const OldPublished = () => {
   return (
-    <div>
-      <h1 classname="text-center"> Old Published Articles</h1>
+    <div className="flex justify-center items-center min-h-screen">
+      <h1 className="text-5xl font-bold text-center">
+        Old Published Articles
+      </h1>
     </div>
   );
 };
