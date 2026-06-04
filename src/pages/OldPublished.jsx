@@ -2,7 +2,7 @@
 const OldPublished = () => {
   return (
     <div>
-      <h1>Old Published Articles</h1>
+      <h1 className="text-center">Old Published Articles</h1>
     </div>
   );
 };
