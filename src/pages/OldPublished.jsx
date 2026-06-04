@@ -1,6 +1,6 @@
 const OldPublished = () => {
   return (
-    <div className="py-10">
+    <div>
       <h1 className="text-center text-5xl font-bold">
         Old Published Articles
       </h1>
