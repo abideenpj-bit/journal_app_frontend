@@ -69,7 +69,7 @@ export default function Login() {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 border border-blue-500/30 text-blue-300 text-xs font-bold uppercase rounded-full">
             <Sparkles size={14} />
-            <span>Welcome Back</span>
+            <span>Welcome </span>
           </div>
           <h1 className="text-3xl font-black tracking-tighter leading-tight">
             PSYCHOLOGICAL{" "}
