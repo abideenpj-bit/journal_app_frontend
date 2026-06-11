@@ -62,7 +62,7 @@ export default function Register() {
         <motion.div initial="hidden" animate="visible" variants={containerVars} className="max-w-md space-y-8 relative z-10 text-white">
           <motion.div variants={itemVars} className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-bold uppercase rounded-full backdrop-blur-xl">
             <Sparkles size={14} className="animate-pulse" />
-            <span>Academic Excellence</span>
+            <span>Academic </span>
           </motion.div>
           <motion.h1 variants={itemVars} className="text-2xl font-black leading-tight tracking-tighter">
             Join the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">PSYCHOLOGICAL JOURNAL Hub</span> of Research.
