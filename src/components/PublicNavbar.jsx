@@ -187,12 +187,14 @@ const PublicNavbar = () => {
                     Recent Published
                   </NavLink>
 
-                <NavLink
-  to="/old-published"
+<a
+  href="https://psyjournas.com/"
+  target="_blank"
+  rel="noopener noreferrer"
   className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
 >
-  Old Published
-</NavLink>
+  Old Publish
+</a>
                 </div>
               )}
             </div>
