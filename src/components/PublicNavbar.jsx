@@ -75,10 +75,12 @@ const PublicNavbar = () => {
                     Recent Published
                   </NavLink>
 
-                 <NavLink to="" className={navLinkStyle}>
-                   <a href="https://psyjournas.com/">Old Published</a>
-  
-</NavLink>
+<a
+  href="https://psyjournas.com/"
+  className={navLinkStyle}
+>
+  Old Published
+</a>
                 </motion.div>
               )}
             </AnimatePresence>
