@@ -88,7 +88,7 @@ export default function Register() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="w-full max-w-md">
           <div className="mb-10 text-center lg:text-left">
-            <h2 className="text-4xl font-black text-slate-900 mb-3 tracking-tight"> Account</h2>
+            <h2 className="text-4xl font-black text-slate-900 mb-3 tracking-tight"> Create Account</h2>
             <p className="text-slate-500 font-medium italic">Empowering researchers worldwide.</p>
           </div>
 
