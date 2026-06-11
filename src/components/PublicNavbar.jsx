@@ -72,7 +72,7 @@ const PublicNavbar = () => {
                     to="/published"
                     className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
                   >
-                    Recent Published
+                    Recent 
                   </NavLink>
 
 <NavLink to="/old-published" className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700" >
