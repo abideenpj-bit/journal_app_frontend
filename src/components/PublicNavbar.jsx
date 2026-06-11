@@ -75,8 +75,9 @@ const PublicNavbar = () => {
                     Recent Published
                   </NavLink>
 
-                 <NavLink to="/old-published" className={navLinkStyle}>
-  Old Published
+                 <NavLink to="" className={navLinkStyle}>
+                   <a href="https://psyjournas.com/">Old Published</a>
+  
 </NavLink>
                 </motion.div>
               )}
