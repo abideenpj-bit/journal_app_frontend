@@ -75,12 +75,8 @@ const PublicNavbar = () => {
                     Recent Published
                   </NavLink>
 
-<a
-  href="https://psyjournas.com/"
-  className={navLinkStyle}
->
-  Old Published
-</a>
+<NavLink to="/old-published" className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700" >
+  
                 </motion.div>
               )}
             </AnimatePresence>
