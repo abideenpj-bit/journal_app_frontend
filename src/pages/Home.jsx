@@ -63,7 +63,7 @@ export default function Home() {
             >
               Advancing the <br />
               <span className="italic font-serif text-primary">
-                Science of the Mind.
+                
               </span>
             </motion.h1>
 
