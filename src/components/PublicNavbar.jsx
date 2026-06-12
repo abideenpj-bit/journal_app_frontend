@@ -74,15 +74,13 @@ const PublicNavbar = () => {
                   >
                     Recent Publish
                   </NavLink>
+                <NavLink
+                    to="https://psyjournas.com/"
+                    className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
+                  >
+                     Old Published
+                  </NavLink>
 
-<a
-  href="https://psyjournas.com/"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
->
-  Old Published
-</a>
   
                 </motion.div>
               )}
@@ -190,14 +188,12 @@ const PublicNavbar = () => {
                     Recent Published
                   </NavLink>
 
-<a
-  href="https://psyjournas.com/"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
->
-  Old Published
-</a>
+                <NavLink
+                    to="https://psyjournas.com/"
+                    className="block px-5 py-2.5 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
+                  >
+                     Old Published
+                  </NavLink>
   
                 </div>
               )}
